@@ -23,8 +23,9 @@ function App() {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <GlobalStyle />
-      <MyHardwareList/>
       <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/mySpec" element={<MyHardwareList />} />
       </Routes>
     </BrowserRouter>
   );

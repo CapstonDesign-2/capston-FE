@@ -1,7 +1,8 @@
-// LandingPage.tsx
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import homeImage from '../image/homeImage.png'
+import homeImage from '../image/homeImage.png';
+import MainLogo from '../image/Main_logo.png';
+import { useNavigate } from 'react-router-dom';
 
 const glowEffect = keyframes`
   0% {
@@ -21,30 +22,85 @@ const glowEffect = keyframes`
   }
 `;
 
+const Container = styled.div`
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: black;
+`;
+
+const ContentWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 2rem;
+`;
+
+const LogoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+`;
+
+const Logo = styled.img`
+  width: 500px;
+  height: auto;
+  margin-bottom: 0.5rem;
+`;
+
+const SubTitle = styled.div`
+  color: white;
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  text-align: center;
+`;
+
+const QuestionText = styled.div`
+  color: white;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 500;
+  text-align: center;
+  max-width: 90%;
+`;
+
+const ButtonSubtext = styled.div`
+  color: #ffffff;
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  text-align: center;
+  max-width: 90%;
+`;
+
 const ButtonText = styled.span`
   position: relative;
   z-index: 2;
   color: #7878AB;
-  font-weight: 500;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+  font-size: clamp(1.5rem, 3vw, 2rem);
   text-shadow: none;
   -webkit-font-smoothing: antialiased;
 `;
 
 const Button = styled.button`
-  position: absolute;
+  position: relative;
   border: none;
-  left: 50%;
-  top: 75%;
-  transform: translate(-50%, -50%);
-  padding: 0.75rem 2.5rem;
-  font-size: clamp(1rem, 2vw, 1.125rem);
-  background: #F5F5FA;
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1.5rem, 4vw, 2.5rem);
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 2rem;
-  overflow: hidden;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.3s ease;
   animation: ${glowEffect} 2s infinite;
+  margin: 2rem 0;
   
   &::before {
     content: '';
@@ -61,54 +117,72 @@ const Button = styled.button`
   }
 
   &:hover {
-    transform: translate(-50%, -50%) scale(1.05);
-    background: #FFFFFF;
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 1);
     ${ButtonText} {
       color: #6868AB;
     }
   }
 
   &:active {
-    transform: translate(-50%, -50%) scale(0.98);
+    transform: scale(0.98);
   }
 `;
 
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  background-color: black;
+const CopyrightText = styled.div`
+  color: #ECECEC;
+  font-size: clamp(0.8rem, 2vw, 1.125rem);
+  text-align: center;
+  margin-top: auto;
+  padding: 2rem 0;
 `;
 
 const FullScreenImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  max-width: 100%;
-  max-height: 100%;
+  object-fit: cover;
+  z-index: 0;
 `;
 
-interface LandingPageProps {
-  onSpecCheck?: () => void;
-}
+const Divider = styled.div`
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  height: 2px;
+  background: #ECECEC;
+  z-index: 2;
+`;
 
-const LandingPage: React.FC<LandingPageProps> = ({ onSpecCheck }) => {
+const LandingPage: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate('/mySpec');
+  };
+
   return (
     <Container>
       <FullScreenImage 
         src={homeImage}
         alt="MySpec Check Background"
       />
-      <Button onClick={onSpecCheck}>
-        <ButtonText>MySpec</ButtonText>
-      </Button>
+      <ContentWrapper>
+        <LogoContainer>
+          <Logo src={MainLogo} alt="MySpec Logo" />
+        </LogoContainer>
+        <QuestionText>What is your computer spec today?</QuestionText>
+        <ButtonSubtext>Press the button below to check my hardware spec</ButtonSubtext>
+        <Divider />
+        <Button onClick={handleButtonClick}>
+          <ButtonText>MySpec</ButtonText>
+        </Button>
+        <CopyrightText>© MySpec team. All Rights Reserved.</CopyrightText>
+      </ContentWrapper>
     </Container>
   );
 };
