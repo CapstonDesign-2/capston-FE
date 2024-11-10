@@ -1,7 +1,11 @@
 import React from 'react';
 import './App.css';
+
 import MyHardwareList from './pages/MyHardwareList';
 import LandingPage from './pages/LandingPage';
+import LoadingPage from './pages/LoadingPage';
+import HardwarePerformance from './pages/HardwarePerformance';
+import AboutPage from './pages/AboutPage';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 
@@ -26,6 +30,9 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/mySpec" element={<MyHardwareList />} />
+        <Route path="/loading" element={<LoadingPage />} />
+        <Route path="/hardware-performance" element={<HardwarePerformance />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
     </BrowserRouter>
   );

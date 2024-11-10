@@ -36,32 +36,26 @@ const Container = styled.div`
 const ContentWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 20px;
-  gap: 2rem;
+  gap: 1rem;
 `;
 
 const LogoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-top: 4rem;
 `;
 
 const Logo = styled.img`
-  width: 500px;
+  width: min(500px, 80vw);
   height: auto;
   margin-bottom: 0.5rem;
-`;
-
-const SubTitle = styled.div`
-  color: white;
-  font-size: clamp(0.8rem, 2vw, 1rem);
-  text-align: center;
 `;
 
 const QuestionText = styled.div`
@@ -70,6 +64,8 @@ const QuestionText = styled.div`
   font-weight: 500;
   text-align: center;
   max-width: 90%;
+  margin-top: 4rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 `;
 
 const ButtonSubtext = styled.div`
@@ -77,6 +73,7 @@ const ButtonSubtext = styled.div`
   font-size: clamp(0.8rem, 2vw, 1rem);
   text-align: center;
   max-width: 90%;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 `;
 
 const ButtonText = styled.span`
@@ -100,7 +97,9 @@ const Button = styled.button`
   white-space: nowrap;
   transition: all 0.3s ease;
   animation: ${glowEffect} 2s infinite;
-  margin: 2rem 0;
+  margin: 2rem auto;
+  width: min(200px, 30%);
+  display: block;
   
   &::before {
     content: '';
@@ -135,6 +134,11 @@ const CopyrightText = styled.div`
   text-align: center;
   margin-top: auto;
   padding: 2rem 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+  z-index: 2;
 `;
 
 const FullScreenImage = styled.img`
@@ -148,21 +152,28 @@ const FullScreenImage = styled.img`
 `;
 
 const Divider = styled.div`
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 40%;
+  width: 45%;
   height: 2px;
   background: #ECECEC;
   z-index: 2;
+  margin: 1rem auto;
+`;
+
+const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+  margin-top: auto;
+  padding-bottom: 6rem;
 `;
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
-    navigate('/mySpec');
+    navigate('/loading');
   };
 
   return (
@@ -175,6 +186,8 @@ const LandingPage: React.FC = () => {
         <LogoContainer>
           <Logo src={MainLogo} alt="MySpec Logo" />
         </LogoContainer>
+
+        <TextContainer>
         <QuestionText>What is your computer spec today?</QuestionText>
         <ButtonSubtext>Press the button below to check my hardware spec</ButtonSubtext>
         <Divider />
@@ -182,6 +195,7 @@ const LandingPage: React.FC = () => {
           <ButtonText>MySpec</ButtonText>
         </Button>
         <CopyrightText>© MySpec team. All Rights Reserved.</CopyrightText>
+        </TextContainer>
       </ContentWrapper>
     </Container>
   );
