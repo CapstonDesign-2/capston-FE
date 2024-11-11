@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Menu, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -16,7 +17,7 @@ const HeaderContainer = styled.header`
 `;
 
 const Logo = styled(Link)`
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: black;
   text-decoration: none;
@@ -61,6 +62,7 @@ const NavLink = styled(Link)`
   font-size: 0.875rem;
   transition: color 0.2s ease;
   white-space: nowrap;
+  padding: 0.5rem 0.5rem;
 
   &:hover {
     color: black;
@@ -103,13 +105,19 @@ const MenuButton = styled.button`
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleButtonClick = () => {
+    navigate('/mySpec');
+  };
+
   return (
     <HeaderContainer>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '2rem'}}>
       <Logo to="/">MySpec</Logo>
       
       <MenuButton onClick={toggleMenu}>
@@ -124,8 +132,8 @@ const Header: React.FC = () => {
           <NavLink to="/about">About</NavLink>
         </NavLinks>
       </Nav>
-
-      <SpecButton>스펙 확인하기</SpecButton>
+      </div>
+      <SpecButton onClick={handleButtonClick}>스펙 확인하기</SpecButton>
     </HeaderContainer>
   );
 };
