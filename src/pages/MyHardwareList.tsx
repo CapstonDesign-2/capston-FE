@@ -173,6 +173,8 @@ const HardwareSpecPage: React.FC = () => {
   const location = useLocation();
   const { systemInfo, scoreInfo } = location.state || {};
 
+  const windowsAppUrl = "https://github.com/CapstonDesign-2/capston-FE/releases/download/zip/mySpec-win32-x64-1.0.0.zip";
+
   const hardwareItems: HardwareItemType[] = [
     { 
       type: 'CPU' as const,  // as const를 사용하여 리터럴 타입으로 지정
@@ -207,7 +209,7 @@ const HardwareSpecPage: React.FC = () => {
               : 'Windows App을 실행하고 스펙 확인하기 버튼을 눌러주세요.'}
           </Subtitle>
           <DownloadSection>
-            <DownloadButton href="/downloads/mySpec-win32-x64-1.0.0.zip" download>
+            <DownloadButton href={windowsAppUrl} download>
               Download Windows App
             </DownloadButton>
           </DownloadSection>
