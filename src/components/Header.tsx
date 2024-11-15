@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import LoadingOverlay from './LoadingOverlay';
+import axiosInstance from '../utils/axiosConfig';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -103,38 +106,132 @@ const MenuButton = styled.button`
   }
 `;
 
+// 타입 정의 추가
+interface SystemInfo {
+  cpu: string;
+  gpu: string;
+  ram: string;
+  deviceId: string;
+}
+
+interface ScoreInfo {
+  cpuScore: number;
+  gpuScore: number;
+  ramScore: number;
+  mySpecScore: number;
+}
+
+interface CombinedInfo {
+  systemInfo: SystemInfo;
+  scoreInfo: ScoreInfo;
+}
+
+const dummyScoreInfo: ScoreInfo = {
+  "cpuScore": 99375,
+  "gpuScore": 18567,
+  "ramScore": 35788,
+  "mySpecScore" : 2314
+  }
+
+const fetchSystemInfo = async (): Promise<CombinedInfo> => {
+  // 1. 시스템 정보 가져오기
+  const response = await fetch('http://localhost:3000/api/system-info', {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+    },
+  });
+  
+  if (!response.ok) {
+    throw new Error('Windows App이 실행되고 있지 않습니다.');
+  }
+  
+  const systemInfo = await response.json();
+  console.log('받아온 시스템 정보:', systemInfo);
+
+  // 2. 스코어 계산하기
+  // const scoreResponse = await axiosInstance.post('/api/score/calculate', {
+  //   deviceId: systemInfo.deviceId,
+  //   cpu: systemInfo.cpu,
+  //   gpu: systemInfo.gpu,
+  //   ram: systemInfo.ram
+  // });
+
+  const result = {
+    systemInfo,
+    scoreInfo: dummyScoreInfo //scoreResponse.data
+  };
+  
+  return result;
+};
+
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const { refetch, isLoading, data: cachedData } = useQuery({
+    queryKey: ['systemInfo'],
+    queryFn: fetchSystemInfo,
+    enabled: false,
+    retry: false,
+  });
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleButtonClick = () => {
-    navigate('/mySpec');
+  const handleButtonClick = async () => {
+    try {
+      // 캐시된 데이터가 있으면 바로 사용
+      if (cachedData) {
+        navigate('/mySpec', { state: cachedData });
+        return;
+      }
+
+      // 캐시된 데이터가 없을 경우 새로 fetch
+      const result = await refetch();
+      
+      // 에러 상태 확인
+      if (result.error) {
+        throw result.error;
+      }
+      
+      // 데이터 존재 여부 확인
+      if (!result.data) {
+        throw new Error('데이터를 가져오는데 실패했습니다.');
+      }
+
+      navigate('/mySpec', { state: result.data });
+    } catch (error) {
+      window.alert('Windows App을 먼저 실행해주세요!');
+      console.error('Error fetching system info:', error);
+    }
   };
 
   return (
-    <HeaderContainer>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '2rem'}}>
-      <Logo to="/">MySpec</Logo>
-      
-      <MenuButton onClick={toggleMenu}>
-        {isOpen ? <X size={24} /> : <Menu size={24} />}
-      </MenuButton>
+    <>
+      {isLoading && <LoadingOverlay />}
+      <HeaderContainer>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '2rem'}}>
+          <Logo to="/">MySpec</Logo>
+          
+          <MenuButton onClick={toggleMenu}>
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </MenuButton>
 
-      <Nav isOpen={isOpen}>
-        <NavLinks>
-          <NavLink to="/hardware-price">가성비 하드웨어</NavLink>
-          <NavLink to="/hardware-performance">성능별 하드웨어</NavLink>
-          <NavLink to="/hardware-ranking">하드웨어 랭킹</NavLink>
-          <NavLink to="/about">About</NavLink>
-        </NavLinks>
-      </Nav>
-      </div>
-      <SpecButton onClick={handleButtonClick}>스펙 확인하기</SpecButton>
-    </HeaderContainer>
+          <Nav isOpen={isOpen}>
+            <NavLinks>
+              <NavLink to="/hardware-performance">하드웨어별 성능 확인</NavLink>
+              <NavLink to="/games">게임 스펙 확인</NavLink>
+              <NavLink to="/hardware-ranking">하드웨어 랭킹</NavLink>
+              <NavLink to="/about">About</NavLink>
+            </NavLinks>
+          </Nav>
+        </div>
+        <SpecButton onClick={handleButtonClick}>
+          스펙 확인하기
+        </SpecButton>
+      </HeaderContainer>
+    </>
   );
 };
 

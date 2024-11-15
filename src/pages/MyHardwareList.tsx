@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import SearchBar from '../components/SearchBar';
 import Header from '../components/Header';
 import { HardwareSpec, StyledIconContainerProps } from '../types';
+import { useLocation } from 'react-router-dom';
 
 import cpuImage from "../image/cpu.svg";
 import gpuImage from "../image/gpu.png";
@@ -53,7 +54,7 @@ const ResultsTitle = styled.h2`
 const HardwareItem = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
   padding: 1rem;
   border-bottom: 1px solid #EAEAEA;
 
@@ -101,25 +102,96 @@ const DeviceId = styled.div`
   font-size: 0.875rem;
 `;
 
+const DownloadButton = styled.a`
+  display: inline-block;
+  background-color: #0066cc;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 1rem;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #0052a3;
+  }
+`;
+
+const DownloadSection = styled.div`
+  text-align: center;
+  margin: 2rem 0;
+`;
+
 // Hardware Item Component
-const HardwareItemComponent: React.FC<HardwareSpec> = ({ type, modelName, iconSrc }) => (
+const HardwareLeftSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const Score = styled.div`
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #EA4C89;
+`;
+
+const TotalScore = styled.div`
+  margin-top: 1.5rem;
+  text-align: center;
+  padding: 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #EA4C89;
+`;
+
+const HardwareItemComponent: React.FC<HardwareSpec & { score?: number }> = ({ 
+  type, 
+  modelName, 
+  iconSrc,
+  score 
+}) => (
   <HardwareItem>
-    <IconContainer type={type}>
-      <img src={iconSrc} alt={type} width={24} height={24} />
-    </IconContainer>
-    <HardwareInfo>
-      <HardwareType>{type}</HardwareType>
-      <HardwareName>{modelName}</HardwareName>
-    </HardwareInfo>
+    <HardwareLeftSection>
+      <IconContainer type={type}>
+        <img src={iconSrc} alt={type} width={24} height={24} />
+      </IconContainer>
+      <HardwareInfo>
+        <HardwareType>{type}</HardwareType>
+        <HardwareName>{modelName}</HardwareName>
+      </HardwareInfo>
+    </HardwareLeftSection>
+    {score !== undefined && <Score>{score.toLocaleString()} 점</Score>}
   </HardwareItem>
 );
 
+// HardwareSpec 타입을 확장한 새로운 타입 정의
+type HardwareItemType = HardwareSpec & { score?: number };
+
 // Main Page Component
 const HardwareSpecPage: React.FC = () => {
-  const hardwareItems: HardwareSpec[] = [
-    { type: 'CPU', modelName: 'cpu Model name', iconSrc: cpuImage },
-    { type: 'GPU', modelName: 'gpu Model name', iconSrc: gpuImage },
-    { type: 'RAM', modelName: 'ram Model name', iconSrc: ramImage },
+  const location = useLocation();
+  const { systemInfo, scoreInfo } = location.state || {};
+
+  const hardwareItems: HardwareItemType[] = [
+    { 
+      type: 'CPU' as const,  // as const를 사용하여 리터럴 타입으로 지정
+      modelName: systemInfo?.cpu || 'Windows App에서 정보를 가져와주세요', 
+      iconSrc: cpuImage,
+      score: scoreInfo?.cpuScore
+    },
+    { 
+      type: 'GPU' as const,
+      modelName: systemInfo?.gpu || 'Windows App에서 정보를 가져와주세요', 
+      iconSrc: gpuImage,
+      score: scoreInfo?.gpuScore
+    },
+    { 
+      type: 'RAM' as const,
+      modelName: systemInfo?.ram || 'Windows App에서 정보를 가져와주세요', 
+      iconSrc: ramImage,
+      score: scoreInfo?.ramScore
+    },
   ];
 
   return (
@@ -130,27 +202,36 @@ const HardwareSpecPage: React.FC = () => {
         <TitleSection>
           <Title>My Hardware Spec</Title>
           <Subtitle>
-            We checked your hardware information for cpu, gpu, ram and you can get each hardware ranks except for mac.
+            {systemInfo 
+              ? '현재 사용중인 하드웨어 정보입니다.'
+              : 'Windows App을 실행하고 스펙 확인하기 버튼을 눌러주세요.'}
           </Subtitle>
+          <DownloadSection>
+            <DownloadButton href="/downloads/mySpec-win32-x64-1.0.0.zip" download>
+              Download Windows App
+            </DownloadButton>
+          </DownloadSection>
         </TitleSection>
 
-        <SearchBar />
-
         <ResultsContainer>
-          <ResultsTitle>3 results here</ResultsTitle>
+          <ResultsTitle>하드웨어 정보</ResultsTitle>
           
           {hardwareItems.map((item, index) => (
             <HardwareItemComponent
               key={index}
-              type={item.type}
-              modelName={item.modelName}
-              iconSrc={item.iconSrc}
+              {...item}
             />
           ))}
+
+          {scoreInfo && (
+            <TotalScore>
+              My Spec Score: {scoreInfo.mySpecScore.toLocaleString()} 점
+            </TotalScore>
+          )}
         </ResultsContainer>
 
         <DeviceId>
-          My Hardware device ID : example code 1234567
+          My Hardware device ID : {systemInfo?.deviceId || '정보를 가져오는 중...'}
         </DeviceId>
       </MainContent>
     </PageContainer>
