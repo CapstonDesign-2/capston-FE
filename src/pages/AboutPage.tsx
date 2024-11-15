@@ -101,7 +101,7 @@ const AboutPage: React.FC = () => {
       role: "Lead, F-E",
       photo: Photo,
       githubUrl: "https://github.com/",
-      email: "member1@email.com"
+      email: "tmdrbs0925@gmail.com"
     },
     {
       name: "김재환",
