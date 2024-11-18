@@ -135,7 +135,7 @@ const dummyScoreInfo: ScoreInfo = {
 
 const fetchSystemInfo = async (): Promise<CombinedInfo> => {
   // 1. 시스템 정보 가져오기
-  const response = await fetch('http://localhost:3000/api/system-info', {
+  const response = await fetch('/api/system-info', {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
