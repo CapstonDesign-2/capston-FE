@@ -135,9 +135,21 @@ const dummyScoreInfo: ScoreInfo = {
 
 const fetchSystemInfo = async (): Promise<CombinedInfo> => {
   try {
-    const response = await axiosInstance.get('http://localhost:3000/api/system-info');
+    const response = await fetch('/api/system-info', {
+      method: 'GET',
+      headers: {
+        "Cache-Control": "no-cache",
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+    }
+    });
     
-    const systemInfo = response.data;
+    if (!response.ok) {
+      throw new Error('Windows App이 실행되고 있지 않습니다.');
+    }
+    
+    const systemInfo = await response.json();
     console.log('받아온 시스템 정보:', systemInfo);
 
     const result = {
