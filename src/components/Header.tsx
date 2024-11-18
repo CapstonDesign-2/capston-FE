@@ -135,7 +135,7 @@ const dummyScoreInfo: ScoreInfo = {
 
 const fetchSystemInfo = async (): Promise<CombinedInfo> => {
   try {
-    const response = await axiosInstance.get('/api/system-info');
+    const response = await axiosInstance.get('http://localhost:3000/api/system-info');
     
     const systemInfo = response.data;
     console.log('받아온 시스템 정보:', systemInfo);
