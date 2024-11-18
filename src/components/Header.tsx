@@ -134,35 +134,22 @@ const dummyScoreInfo: ScoreInfo = {
   }
 
 const fetchSystemInfo = async (): Promise<CombinedInfo> => {
-  // 1. 시스템 정보 가져오기
-  const response = await fetch('/api/system-info', {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-    },
-  });
-  
-  if (!response.ok) {
+  try {
+    const response = await axiosInstance.get('/api/system-info');
+    
+    const systemInfo = response.data;
+    console.log('받아온 시스템 정보:', systemInfo);
+
+    const result = {
+      systemInfo,
+      scoreInfo: dummyScoreInfo
+    };
+    
+    return result;
+  } catch (error) {
+    console.error('통신 에러:', error);
     throw new Error('Windows App이 실행되고 있지 않습니다.');
   }
-  
-  const systemInfo = await response.json();
-  console.log('받아온 시스템 정보:', systemInfo);
-
-  // 2. 스코어 계산하기
-  // const scoreResponse = await axiosInstance.post('/api/score/calculate', {
-  //   deviceId: systemInfo.deviceId,
-  //   cpu: systemInfo.cpu,
-  //   gpu: systemInfo.gpu,
-  //   ram: systemInfo.ram
-  // });
-
-  const result = {
-    systemInfo,
-    scoreInfo: dummyScoreInfo //scoreResponse.data
-  };
-  
-  return result;
 };
 
 const Header: React.FC = () => {
