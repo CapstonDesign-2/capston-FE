@@ -138,9 +138,7 @@ const fetchSystemInfo = async (): Promise<CombinedInfo> => {
     const response = await fetch('http://localhost:3000/api/system-info', {
       method: 'GET',
       headers: {
-        "Cache-Control": "no-cache",
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
         "Access-Control-Allow-Origin": "*",
     }
     });
