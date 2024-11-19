@@ -2,17 +2,21 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 
 module.exports = (app) => {
   app.use(
-    "/api",
+    "/api/system-info",
     createProxyMiddleware({
-      target: "https://benchcom.duckdns.org/",
+      target: "http://localhost:3000",
       changeOrigin: true,
     })
   );
+
   app.use(
-    "/api2",
+    "/api",
     createProxyMiddleware({
-      target: "http://localhost:3000/",
+      target: "https://benchcom.duckdns.org",
       changeOrigin: true,
+      pathRewrite: {
+        "^/api": "/",
+      },
     })
   );
 };
