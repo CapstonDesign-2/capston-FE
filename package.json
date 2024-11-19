@@ -15,6 +15,7 @@
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "axios": "^1.7.7",
+    "http-proxy-middleware": "^3.0.3",
     "lucide-react": "^0.453.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -51,7 +52,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://benchcom.duckdns.org/",
   "devDependencies": {
     "@types/react-window-infinite-loader": "^1.0.9"
   }
