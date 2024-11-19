@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import SearchBar from '../components/SearchBar';
 import Header from '../components/Header';
 import { HardwareSpec, StyledIconContainerProps } from '../types';
 import { useLocation } from 'react-router-dom';

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { FixedSizeList as List } from 'react-window';
 
 export const Container = styled.div`
   padding: 2rem;
@@ -13,7 +14,8 @@ export const RankingList = styled.div`
 `;
 
 export const RankingItem = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 80px 1fr 400px;
   align-items: center;
   padding: 1rem;
   border: 1px solid #EAEAEA;
@@ -24,14 +26,37 @@ export const RankingItem = styled.div`
 export const Rank = styled.span`
   font-size: 1.5rem;
   font-weight: bold;
-  width: 50px;
+  text-align: center;
 `;
 
 export const Name = styled.span`
-  flex: 1;
+  padding: 0 1rem;
+`;
+
+export const ScoreWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+`;
+
+export const ScoreItem = styled.span`
+  font-weight: bold;
+  color: #EA4C89;
+  text-align: right;
+  white-space: nowrap;
 `;
 
 export const Score = styled.span`
   font-weight: bold;
   color: #EA4C89;
+  margin-left: 1rem;  // 점수와 가격 사이 간격
+`;
+
+export const StyledList = styled(List)`
+  overflow-x: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  &::-webkit-scrollbar {
+    display: none !important;
+  }
 `;

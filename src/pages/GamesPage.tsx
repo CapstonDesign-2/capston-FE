@@ -89,7 +89,7 @@ const dummyGames = [
   {
     gameId: 3,
     gameName: "오버워치 2",
-    gameThumbnail: "https://blz-contentstack-images.akamaized.net/v3/assets/blt9c12f249ac15c7ec/blt0c8f84fc946f8f4c/62f27348d626b0396d4ebf17/ow2-beta_battle-for-olympus_002.jpg",
+    gameThumbnail: "TeamLogo",
     minimumTotalScore: 4800.00,
     recommendedTotalScore: 5500.00,
     maximumTotalScore: 9200.00,
@@ -120,19 +120,16 @@ const GamesPage: React.FC = () => {
     const fetchGames = async () => {
       try {
         const response = await axiosInstance.get('/api/game');
+        console.log(response.data);
         const data = response.data;
-        if (data.success) {
-          setGames(Array.isArray(data.games) ? data.games : [data.game]);
-        }
+        setGames(Array.isArray(data) ? data : [data]);
       } catch (error) {
         console.error('Error fetching games:', error);
-      } finally {
-        
+        setGames(dummyGames); // 에러 시 더미 데이터 사용
       }
     };
 
     fetchGames();
-    setGames(dummyGames);
   }, []);
 
   return (

@@ -9,6 +9,7 @@ import AboutPage from './pages/AboutPage';
 import GamesPage from './pages/GamesPage';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
+import RankingPage from './pages/RankingPage';
 
 export const GlobalStyle = createGlobalStyle`
   * {
@@ -44,6 +45,7 @@ function App() {
           <Route path="/hardware-performance" element={<HardwarePerformance />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/games" element={<GamesPage />} />
+          <Route path="/hardware-ranking" element={<RankingPage />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

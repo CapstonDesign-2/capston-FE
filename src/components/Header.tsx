@@ -5,7 +5,6 @@ import { Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import LoadingOverlay from './LoadingOverlay';
-import axiosInstance from '../utils/axiosConfig';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -148,7 +147,7 @@ const fetchSystemInfo = async (): Promise<CombinedInfo> => {
     }
     
     const systemInfo = await response.json();
-    console.log('받아온 시스템 정보:', systemInfo);
+    localStorage.setItem('macAddress', systemInfo.deviceId);
 
     const result = {
       systemInfo,

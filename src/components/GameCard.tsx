@@ -96,6 +96,9 @@ const TotalScore = styled.div`
 `;
 
 const GameCard: React.FC<GameCardProps> = ({ game, matchedHardware }) => {
+  // 고사양 정보 존재 여부 확인
+  const hasMaximumSpec = matchedHardware.maximum?.cpus?.length > 0;
+
   return (
     <Card>
       <GameHeader>
@@ -103,7 +106,9 @@ const GameCard: React.FC<GameCardProps> = ({ game, matchedHardware }) => {
         <GameTitle>{game.gameName}</GameTitle>
       </GameHeader>
 
-      <SpecsContainer>
+      <SpecsContainer style={{ 
+        gridTemplateColumns: hasMaximumSpec ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)'
+      }}>
         <SpecColumn>
           <SpecTitle>최소 사양</SpecTitle>
           <SpecItem>
@@ -138,22 +143,24 @@ const GameCard: React.FC<GameCardProps> = ({ game, matchedHardware }) => {
           <TotalScore>Score: {game.recommendedTotalScore.toFixed(2)}</TotalScore>
         </SpecColumn>
 
-        <SpecColumn>
-          <SpecTitle>최고 사양</SpecTitle>
-          <SpecItem>
-            <SpecLabel>CPU</SpecLabel>
-            <SpecValue>{matchedHardware.maximum.cpus[0]}</SpecValue>
-          </SpecItem>
-          <SpecItem>
-            <SpecLabel>GPU</SpecLabel>
-            <SpecValue>{matchedHardware.maximum.gpus[0]}</SpecValue>
-          </SpecItem>
-          <SpecItem>
-            <SpecLabel>RAM</SpecLabel>
-            <SpecValue>{matchedHardware.maximum.ram}</SpecValue>
-          </SpecItem>
-          <TotalScore>Score: {game.maximumTotalScore.toFixed(2)}</TotalScore>
-        </SpecColumn>
+        {hasMaximumSpec && (
+          <SpecColumn>
+            <SpecTitle>고사양</SpecTitle>
+            <SpecItem>
+              <SpecLabel>CPU</SpecLabel>
+              <SpecValue>{matchedHardware.maximum.cpus[0]}</SpecValue>
+            </SpecItem>
+            <SpecItem>
+              <SpecLabel>GPU</SpecLabel>
+              <SpecValue>{matchedHardware.maximum.gpus[0]}</SpecValue>
+            </SpecItem>
+            <SpecItem>
+              <SpecLabel>RAM</SpecLabel>
+              <SpecValue>{matchedHardware.maximum.ram}</SpecValue>
+            </SpecItem>
+            <TotalScore>Score: {game.maximumTotalScore.toFixed(2)}</TotalScore>
+          </SpecColumn>
+        )}
       </SpecsContainer>
     </Card>
   );
