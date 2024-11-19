@@ -140,7 +140,7 @@ const fetchSystemInfo = async (): Promise<CombinedInfo> => {
       headers: {
         'Accept': 'application/json',
         "Access-Control-Allow-Origin": "*",
-    }
+      }
     });
     
     if (!response.ok) {
