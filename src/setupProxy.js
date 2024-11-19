@@ -6,9 +6,6 @@ module.exports = (app) => {
     createProxyMiddleware({
       target: "http://localhost:3000",
       changeOrigin: true,
-      pathRewrite: {
-        "^/api/system-info": "/",
-      },
     })
   );
 
@@ -17,9 +14,6 @@ module.exports = (app) => {
     createProxyMiddleware({
       target: "https://benchcom.duckdns.org",
       changeOrigin: true,
-      pathRewrite: {
-        "^/api": "/",
-      },
     })
   );
 };
