@@ -135,7 +135,7 @@ const dummyScoreInfo: ScoreInfo = {
 
 const fetchSystemInfo = async (): Promise<CombinedInfo> => {
   try {
-    const response = await fetch('https://ff5b-163-152-233-18.ngrok-free.app/api/system-info', {
+    const response = await fetch('http://localhost:3000/api/system-info', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
