@@ -137,9 +137,10 @@ const fetchSystemInfo = async (): Promise<CombinedInfo> => {
     const response = await fetch('http://localhost:3000/api/system-info', {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': '*'
       }
-    });
+  });
     
     if (!response.ok) {
       throw new Error('Windows App이 실행되고 있지 않습니다.');
