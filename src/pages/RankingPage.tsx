@@ -126,7 +126,11 @@ const RankingPage: React.FC = () => {
     fetchRankings();
   }, []);
 
-  const renderRankingRow = (item: RankingItem, index: number, isMyRanking: boolean = false) => {
+  const renderRankingRow = (item: RankingItem, index: number) => {
+    // localStorage에서 macAddress 가져와서 현재 행이 사용자의 것인지 확인
+    const myMacAddress = localStorage.getItem('macAddress');
+    const isMyRanking = item.serialNum === myMacAddress;
+    
     const RowComponent = isMyRanking ? MyRankingRow : Tr;
     
     return (
@@ -168,7 +172,7 @@ const RankingPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {renderRankingRow(myRanking.item, myRanking.rank - 1, true)}
+                {renderRankingRow(myRanking.item, myRanking.rank - 1)}
               </tbody>
             </RankingTable>
           </MyRankingContainer>

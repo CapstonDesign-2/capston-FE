@@ -5,6 +5,7 @@ import { Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import LoadingOverlay from './LoadingOverlay';
+import axiosInstance from '../utils/axiosConfig';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -125,13 +126,6 @@ interface CombinedInfo {
   scoreInfo: ScoreInfo;
 }
 
-const dummyScoreInfo: ScoreInfo = {
-  "cpuScore": 99375,
-  "gpuScore": 18567,
-  "ramScore": 35788,
-  "mySpecScore" : 2314
-  }
-
 const fetchSystemInfo = async (): Promise<CombinedInfo> => {
   try {
     const response = await fetch('http://localhost:3000/api/system-info', {
@@ -139,7 +133,7 @@ const fetchSystemInfo = async (): Promise<CombinedInfo> => {
       headers: {
         'Content-type': 'application/json; charset=utf-8'
       }
-  });
+    });
     
     if (!response.ok) {
       throw new Error('Windows App이 실행되고 있지 않습니다.');
@@ -148,9 +142,30 @@ const fetchSystemInfo = async (): Promise<CombinedInfo> => {
     const systemInfo = await response.json();
     localStorage.setItem('macAddress', systemInfo.deviceId);
 
+    console.log('calculate API 호출 전 데이터:', {
+      deviceId: systemInfo.deviceId,
+      cpu: systemInfo.cpu,
+      gpu: systemInfo.gpu,
+      ram: systemInfo.ram
+    });
+
+    const calculateResponse = await axiosInstance.post('/api/score/calculate', [{
+      deviceId: systemInfo.deviceId,
+      cpu: systemInfo.cpu,
+      gpu: systemInfo.gpu,
+      ram: systemInfo.ram
+    }]);
+
+    const scoreData = calculateResponse.data[0];
+    
     const result = {
       systemInfo,
-      scoreInfo: dummyScoreInfo
+      scoreInfo: {
+        cpuScore: scoreData.cpuScore,
+        gpuScore: scoreData.gpuScore,
+        ramScore: scoreData.ramScore,
+        mySpecScore: scoreData.totalScore,
+      }
     };
     
     return result;
