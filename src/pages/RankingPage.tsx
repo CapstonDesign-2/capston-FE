@@ -86,39 +86,6 @@ const MyRankingTitle = styled.h2`
   border-bottom: 1px solid #FFE4E1;
 `;
 
-// 더미 데이터
-const dummyRankings: RankingItem[] = [
-  {
-    serialNum: "1234",
-    myCPU: "Intel Core i9-13900K",
-    myGPU: "NVIDIA GeForce RTX 4090",
-    myRAM: "DDR5-6000 64GB",
-    cpuScore: 99375,
-    gpuScore: 18567,
-    ramScore: 35788,
-    totalScore: 153730
-  },
-  {
-    serialNum: "5678",
-    myCPU: "AMD Ryzen 9 7950X",
-    myGPU: "NVIDIA GeForce RTX 4080",
-    myRAM: "DDR5-5600 32GB",
-    cpuScore: 95000,
-    gpuScore: 17500,
-    ramScore: 32000,
-    totalScore: 144500
-  },
-  {
-    serialNum: "b4:2e:99:9d:cd:2e",
-    myCPU: "Intel Core i7-13700K",
-    myGPU: "NVIDIA GeForce RTX 4070",
-    myRAM: "DDR5-5200 32GB",
-    cpuScore: 85000,
-    gpuScore: 15000,
-    ramScore: 30000,
-    totalScore: 130000
-  }
-];
 
 const RankingPage: React.FC = () => {
   const [rankings, setRankings] = useState<RankingItem[]>([]);
@@ -129,22 +96,22 @@ const RankingPage: React.FC = () => {
     const fetchRankings = async () => {
       setIsLoading(true);
       try {
-        // const response = await axiosInstance.get('/api/hardware/ranking');
-        // setRankings(response.data);
-        setRankings(dummyRankings);
+        const response = await axiosInstance.get('/api/hardware/ranking');
+        setRankings(response.data.sortedDate);
+        // setRankings(dummyRankings);
         
         // localStorage에서 macAddress 가져오기
         const myMacAddress = localStorage.getItem('macAddress');
         
         // 내 랭킹 찾기
         if (myMacAddress) {
-          const myRankingIndex = dummyRankings.findIndex(
+          const myRankingIndex = rankings.findIndex(
             item => item.serialNum === myMacAddress
           );
           
           if (myRankingIndex !== -1) {
             setMyRanking({
-              item: dummyRankings[myRankingIndex],
+              item: rankings[myRankingIndex],
               rank: myRankingIndex + 1
             });
           }
@@ -157,7 +124,7 @@ const RankingPage: React.FC = () => {
     };
 
     fetchRankings();
-  }, []);
+  }, [rankings]);
 
   const renderRankingRow = (item: RankingItem, index: number, isMyRanking: boolean = false) => {
     const RowComponent = isMyRanking ? MyRankingRow : Tr;
