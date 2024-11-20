@@ -14,6 +14,12 @@ module.exports = (app) => {
     createProxyMiddleware({
       target: "https://benchcom.duckdns.org",
       changeOrigin: true,
+      pathRewrite: {
+        '^/api': '' 
+      },
+      onProxyRes: function (proxyRes, req, res) {
+        proxyRes.headers['Access-Control-Allow-Origin'] = 'https://lustrous-starburst-fc4ad8.netlify.app';
+      }
     })
   );
 };
