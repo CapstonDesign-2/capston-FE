@@ -97,21 +97,22 @@ const RankingPage: React.FC = () => {
       setIsLoading(true);
       try {
         const response = await axiosInstance.get('/api/hardware/ranking');
-        setRankings(response.data.sortedData);
-        // setRankings(dummyRankings);
+        const rankingsData = response.data.sortedData;
+        setRankings(rankingsData);
         
         // localStorage에서 macAddress 가져오기
         const myMacAddress = localStorage.getItem('macAddress');
         
-        // 내 랭킹 찾기
+        // 새로 받아온 rankingsData를 사용하여 내 랭킹 찾기
         if (myMacAddress) {
-          const myRankingIndex = rankings.findIndex(
-            item => item.serialNum === myMacAddress
+          const myRankingIndex = rankingsData.findIndex(
+            (item: RankingItem) => item.serialNum === myMacAddress
           );
+          console.log("myRankingIndex :", myRankingIndex);
           
           if (myRankingIndex !== -1) {
             setMyRanking({
-              item: rankings[myRankingIndex],
+              item: rankingsData[myRankingIndex],
               rank: myRankingIndex + 1
             });
           }
