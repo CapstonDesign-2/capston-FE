@@ -11,6 +11,7 @@ const Card = styled.div`
 `;
 
 const MemberPhoto = styled.img`
+  background-color: #f1f1f1;
   width: 120px;
   height: 120px;
   border-radius: 30px;

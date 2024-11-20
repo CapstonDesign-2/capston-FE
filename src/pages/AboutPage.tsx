@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import MemberCard from '../components/MemberCard';
 import AboutImage from '../image/About_image.png';
 import TeamLogoImage from '../image/Team_Logo.png';
-import Photo from '../image/Photo.png';
 import { FaGithub } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { TeamSection, ContactLink } from '../styles/AboutPage.styles';
@@ -99,30 +98,30 @@ const AboutPage: React.FC = () => {
     {
       name: "박승균",
       role: "Lead, F-E",
-      photo: Photo,
-      githubUrl: "https://github.com/",
-      email: "tmdrbs0925@gmail.com"
+      photo: TeamLogoImage,
+      githubUrl: "https://github.com/seungyun-Park",
+      email: ""
     },
     {
       name: "김재환",
       role: "B-E",
-      photo: Photo,
-      githubUrl: "https://github.com/",
-      email: "member2@email.com"
+      photo: TeamLogoImage,
+      githubUrl: "https://github.com/Jaeboong",
+      email: ""
     },
     {
       name: "한시현",
       role: "DevOps",
-      photo: Photo,
-      githubUrl: "https://github.com/",
-      email: "member3@email.com"
+      photo: TeamLogoImage,
+      githubUrl: "https://github.com/devowl99",
+      email: ""
     },
     {
       name: "박규원",
       role: "B-E",
-      photo: Photo,
-      githubUrl: "https://github.com/",
-      email: "member4@email.com"
+      photo: TeamLogoImage,
+      githubUrl: "https://github.com/High-Quality-Coffee",
+      email: ""
     }
   ];
 
@@ -144,7 +143,7 @@ const AboutPage: React.FC = () => {
           <RightSection>
             <TopText>Contact</TopText>
             <ContactLinks>
-              <ContactLink href="" target="_blank" rel="noopener noreferrer">
+              <ContactLink href="https://github.com/CapstonDesign-2" target="_blank" rel="noopener noreferrer">
                 <FaGithub />
               </ContactLink>
               <ContactLink href="">
