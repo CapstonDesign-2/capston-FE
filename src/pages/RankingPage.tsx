@@ -97,7 +97,7 @@ const RankingPage: React.FC = () => {
       setIsLoading(true);
       try {
         const response = await axiosInstance.get('/api/hardware/ranking');
-        setRankings(response.data.sortedDate);
+        setRankings(response.data.sortedData);
         // setRankings(dummyRankings);
         
         // localStorage에서 macAddress 가져오기
@@ -124,7 +124,7 @@ const RankingPage: React.FC = () => {
     };
 
     fetchRankings();
-  }, [rankings]);
+  }, []);
 
   const renderRankingRow = (item: RankingItem, index: number, isMyRanking: boolean = false) => {
     const RowComponent = isMyRanking ? MyRankingRow : Tr;
@@ -132,7 +132,6 @@ const RankingPage: React.FC = () => {
     return (
       <RowComponent key={item.serialNum}>
         <Td>{index + 1}</Td>
-        <Td>{item.serialNum}</Td>
         <Td>{item.myCPU || 'N/A'}</Td>
         <Td>{item.myGPU || 'N/A'}</Td>
         <Td>{item.myRAM || 'N/A'}</Td>
@@ -159,7 +158,6 @@ const RankingPage: React.FC = () => {
               <thead>
                 <tr>
                   <Th>순위</Th>
-                  <Th>시리얼 번호</Th>
                   <Th>CPU</Th>
                   <Th>GPU</Th>
                   <Th>RAM</Th>
@@ -180,7 +178,6 @@ const RankingPage: React.FC = () => {
           <thead>
             <tr>
               <Th>순위</Th>
-              <Th>시리얼 번호</Th>
               <Th>CPU</Th>
               <Th>GPU</Th>
               <Th>RAM</Th>

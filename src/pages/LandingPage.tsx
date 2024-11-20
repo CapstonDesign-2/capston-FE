@@ -80,7 +80,6 @@ const ButtonText = styled.span`
   position: relative;
   z-index: 2;
   color: #7878AB;
-  font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
   font-size: clamp(1.5rem, 3vw, 2rem);
   text-shadow: none;
